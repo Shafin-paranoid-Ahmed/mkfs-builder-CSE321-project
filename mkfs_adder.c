@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
-#include <errno.h>
 #include <time.h>
 #include <stdlib.h>
 #include <sys/stat.h>
