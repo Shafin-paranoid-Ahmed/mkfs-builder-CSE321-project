@@ -287,6 +287,7 @@ static int add_file_to_root(const cli_t *cli){
     node.gid        = 0;
     node.size_bytes = fsize;
     node.atime = node.mtime = node.ctime = now;
+    node.proj_id = 3;
     for (uint32_t k=0;k<need_blocks;k++) node.direct[k] = abs_blocks[k];
     inode_crc_finalize(&node);
     memcpy(inode_base + (size_t)(free_i_rel) * INODE_SIZE, &node, sizeof(node));
