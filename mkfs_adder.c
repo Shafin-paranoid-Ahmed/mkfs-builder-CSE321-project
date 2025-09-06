@@ -321,7 +321,8 @@ static int add_file_to_root(const cli_t *cli){
 
     // bump root inode link count + mtime
     inode_t *root = (inode_t*)(inode_base + 0 * INODE_SIZE);
-    root->links += 1;
+    root->links += 1;                         
+    root->size_bytes += sizeof(dirent64_t);   
     root->mtime = now;
     inode_crc_finalize(root);
 
