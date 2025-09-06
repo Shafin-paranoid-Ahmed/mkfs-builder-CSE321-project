@@ -1,6 +1,8 @@
 #define _FILE_OFFSET_BITS 64
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+
 
 #define BS 4096u
 #define INODE_SIZE 128u
@@ -32,7 +34,7 @@ typedef struct {
     uint64_t mtime_epoch;
 
     uint32_t flags;
-    
+
     uint32_t checksum;            // crc32(superblock[0..4091])
 } superblock_t;
 #pragma pack(pop)
@@ -61,7 +63,7 @@ typedef struct {
     uint32_t proj_id;
     uint32_t uid16_gid16;
 
-    uint32_t xatt_ptr;
+    uint64_t xattr_ptr;
     // ALL OTHER FIELDS SHOULD BE ABOVE THIS
     uint64_t inode_crc;   // low 4 bytes store crc32 of bytes [0..119]; high 4 bytes 0
 
@@ -71,8 +73,9 @@ _Static_assert(sizeof(inode_t)==INODE_SIZE, "inode size mismatch");
 
 #pragma pack(push,1)
 typedef struct {
-    // CREATE YOUR DIRECTORY ENTRY STRUCTURE HERE
-    // IF CREATED CORRECTLY, THE STATIC_ASSERT ERROR SHOULD BE GONE
+    uint32_t inode_no;
+    uint8_t type;
+    char name[58];
 
     uint8_t  checksum; // XOR of bytes 0..62
 } dirent64_t;

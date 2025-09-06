@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <time.h>
 #include <assert.h>
+#include <string.h>
+
 
 #define BS 4096u               // block size
 #define INODE_SIZE 128u
@@ -58,6 +60,7 @@ typedef struct {
     uint32_t gid;
 
     uint64_t size_bytes;
+
     uint64_t atime;
     uint64_t mtime;
     uint64_t ctime;
@@ -72,7 +75,7 @@ typedef struct {
     uint32_t proj_id;
     uint32_t uid16_gid16;
 
-    uint32_t xatt_ptr;
+    uint64_t xattr_ptr;
     // ALL OTHER FIELDS SHOULD BE ABOVE THIS
     uint64_t inode_crc;   // low 4 bytes store crc32 of bytes [0..119]; high 4 bytes 0
 
@@ -82,8 +85,9 @@ _Static_assert(sizeof(inode_t)==INODE_SIZE, "inode size mismatch");
 
 #pragma pack(push,1)
 typedef struct {
-    // CREATE YOUR DIRECTORY ENTRY STRUCTURE HERE
-    // IF CREATED CORRECTLY, THE STATIC_ASSERT ERROR SHOULD BE GONE
+    uint32_t inode_no;
+    uint8_t type;
+    char name[58];
 
     uint8_t  checksum; // XOR of bytes 0..62
 } dirent64_t;
