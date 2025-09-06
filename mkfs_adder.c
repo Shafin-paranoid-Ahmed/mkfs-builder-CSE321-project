@@ -9,11 +9,30 @@
 #pragma pack(push, 1)
 
 typedef struct {
-    // CREATE YOUR SUPERBLOCK HERE
-    // ADD ALL FIELDS AS PROVIDED BY THE SPECIFICATION
+    uint32_t magic_number;
+    uint32_t version;
+    uint32_t block_size;
     
-    // THIS FIELD SHOULD STAY AT THE END
-    // ALL OTHER FIELDS SHOULD BE ABOVE THIS
+    uint64_t total_blocks;
+    uint64_t inodes_count;
+
+    uint64_t inode_bitmap_start;
+    uint64_t inode_bitmap_blocks;
+
+    uint64_t data_bitmap_start;
+    uint64_t data_bitmap_blocks;
+
+    uint64_t inode_table_start;
+    uint64_t inode_table_blocks;
+
+    uint64_t data_region_start;
+    uint64_t data_region_blocks;
+
+    uint64_t root_inode;
+    uint64_t mtime_epoch;
+
+    uint32_t flags;
+    
     uint32_t checksum;            // crc32(superblock[0..4091])
 } superblock_t;
 #pragma pack(pop)
@@ -21,10 +40,28 @@ _Static_assert(sizeof(superblock_t) == 116, "superblock must fit in one block");
 
 #pragma pack(push,1)
 typedef struct {
-    // CREATE YOUR INODE HERE
-    // IF CREATED CORRECTLY, THE STATIC_ASSERT ERROR SHOULD BE GONE
+    uint16_t mode;
+    uint16_t links;
 
-    // THIS FIELD SHOULD STAY AT THE END
+    uint32_t uid;
+    uint32_t gid;
+
+    uint64_t size_bytes;
+    uint64_t atime;
+    uint64_t mtime;
+    uint64_t ctime;
+
+
+    uint32_t direct[12];
+
+    uint32_t reserved_0;          
+    uint32_t reserved_1;          
+    uint32_t reserved_2;
+    
+    uint32_t proj_id;
+    uint32_t uid16_gid16;
+
+    uint32_t xatt_ptr;
     // ALL OTHER FIELDS SHOULD BE ABOVE THIS
     uint64_t inode_crc;   // low 4 bytes store crc32 of bytes [0..119]; high 4 bytes 0
 
