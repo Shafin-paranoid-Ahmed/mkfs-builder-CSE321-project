@@ -314,7 +314,6 @@ static int build_and_save_fs(const cli_t *cli){
     uint64_t now     = (uint64_t)time(NULL);
     root.atime = root.mtime = root.ctime = now;
     root.proj_id = 3;
-
     root.direct[0]   = (uint32_t)data_region_start;    // ABSOLUTE block number
     // other direct[] entries are already 0
 
